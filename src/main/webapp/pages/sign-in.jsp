@@ -3,7 +3,10 @@
          pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
-
+<%
+  String successMessage = (String) session.getAttribute("successMessage");
+  String failedMessage = (String) session.getAttribute("failedMessage");
+%>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -17,35 +20,6 @@
   <div class="container position-sticky z-index-sticky top-0">
     <div class="row">
       <div class="col-12">
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
-          <div class="container-fluid pe-0">
-            <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon mt-2">
-                <span class="navbar-toggler-bar bar1"></span>
-                <span class="navbar-toggler-bar bar2"></span>
-                <span class="navbar-toggler-bar bar3"></span>
-              </span>
-            </button>
-            <div class="collapse navbar-collapse" id="navigation">
-              <ul class="navbar-nav mx-auto ms-xl-auto">
-                <li class="nav-item">
-                  <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="../index.jsp">
-                    <i class="fa fa-chart-pie opacity-6 text-dark me-1"></i>
-                    Home
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link me-2" href="sign-up.jsp">
-                    <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
-                    Sign Up
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-        <!-- End Navbar -->
       </div>
     </div>
   </div>
@@ -82,7 +56,7 @@
                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                   <p class="mb-4 text-sm mx-auto">
                     Don't have an account?
-                    <a href="sign-up.jsp" class="text-info text-gradient font-weight-bold">Sign up</a>
+                    <a href="${pageContext.request.contextPath}/UserServlet?action=registerPage" class="text-info text-gradient font-weight-bold">Sign up</a>
                   </p>
                 </div>
               </div>

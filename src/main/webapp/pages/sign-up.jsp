@@ -14,44 +14,15 @@
 </head>
 
 <body class="">
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3 navbar-transparent mt-4">
-    <div class="container">
-      <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon mt-2">
-          <span class="navbar-toggler-bar bar1"></span>
-          <span class="navbar-toggler-bar bar2"></span>
-          <span class="navbar-toggler-bar bar3"></span>
-        </span>
-      </button>
-      <div class="collapse navbar-collapse" id="navigation">
-        <ul class="navbar-nav mx-auto ms-xl-auto ">
-          <li class="nav-item">
-            <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="../index.jsp">
-              <i class="fa fa-chart-pie opacity-6  me-1"></i>
-              Home
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link me-2" href="sign-in.jsp">
-              <i class="fas fa-key opacity-6  me-1"></i>
-              Sign In
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <!-- End Navbar -->
   <main class="main-content  mt-0">
     <section class="min-vh-100 mb-4">
-      <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg" style="background-image: url('../assets/img/curved-images/curved14.jpg');">
+      <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg" style="background-image: url('./assets/img/curved-images/curved14.jpg');">
         <span class="mask bg-gradient-dark opacity-6"></span>
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-lg-5 text-center mx-auto">
               <h1 class="text-white mb-2 mt-5">Welcome!</h1>
-              <p class="text-lead text-white">Create an account to use this fantastic book service.</p>
+              <p class="text-lead text-white">Create an account to use this fantastic school service.</p>
             </div>
           </div>
         </div>
@@ -87,16 +58,37 @@
                   <div class="mb-3">
                     <input type="password" class="form-control" placeholder="Password" name="password" aria-label="Password" aria-describedby="password-addon" required>
                   </div>
-                  <div class="form-check form-check-info text-left">
+                  <div class="row">
+                    <div class="col-4">
+                      <div class="form-check ">
+                        <input class="form-check-input" type="radio" id="customRadio1" name="role" value="student">
+                        <label class="custom-control-label" for="customRadio1">Student</label>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-check ">
+                        <input class="form-check-input" type="radio" id="customRadio2" name="role" value="teacher">
+                        <label class="custom-control-label" for="customRadio2">Teacher</label>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-check ">
+                        <input class="form-check-input" type="radio"id="customRadio3" name="role" value="admin">
+                        <label class="custom-control-label" for="customRadio3">Admin</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <%--<div class="form-check form-check-info text-left">
                     <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="isAdmin">
                     <label class="form-check-label" for="flexCheckDefault">
                       Are you an <a href="javascript:;" class="text-dark font-weight-bolder">Admin?</a>
                     </label>
-                  </div>
+                  </div>--%>
                   <div class="text-center">
                     <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
                   </div>
-                  <p class="text-sm mt-3 mb-0">Already have an account? <a href="sign-in.jsp" class="text-dark font-weight-bolder">Sign in</a></p>
+                  <p class="text-sm mt-3 mb-0">Already have an account? <a href="${pageContext.request.contextPath}/UserServlet?action=loginPage" class="text-dark font-weight-bolder">Sign in</a></p>
                 </form>
               </div>
             </div>
