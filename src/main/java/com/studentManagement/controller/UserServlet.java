@@ -43,7 +43,7 @@ public class UserServlet extends HttpServlet {
 
     private void registerPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         var session = request.getSession(false);
-        session.invalidate();
+        session.removeAttribute("userData");
         RequestDispatcher dispatcher = request.getRequestDispatcher("pages/sign-up.jsp");
         dispatcher.forward(request, response);
     }
@@ -67,10 +67,23 @@ public class UserServlet extends HttpServlet {
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
         var session = request.getSession(false);
-        if (session.getAttribute("userData") != null) {
-            User user = (User) session.getAttribute("userData");
-            if (Objects.equals(user.getRole(), "admin")) {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("pages/profile.jsp");
+        session.removeAttribute("failedMessage");
+        session.removeAttribute("successMessage");
+        User sessionUser = (User) session.getAttribute("userData");
+        if (sessionUser != null) {
+            List<User> users = userService.getUsers();
+            User user = userService.findUser(sessionUser.getEmail());
+            users.remove(user);
+            session.setAttribute("userData", user);
+            session.setAttribute("userList", users);
+            RequestDispatcher dispatcher = null;
+            if (user.isActive()) {
+                switch (user.getRole()) {
+                    case "admin" -> dispatcher = request.getRequestDispatcher("pages/admin/profile.jsp");
+                    case "student" -> dispatcher = request.getRequestDispatcher("pages/student/profile.jsp");
+                    case "teacher" -> dispatcher = request.getRequestDispatcher("pages/teacher/profile.jsp");
+                }
+                assert dispatcher != null;
                 dispatcher.include(request, response);
                 return;
             }
@@ -233,6 +246,4 @@ public class UserServlet extends HttpServlet {
         adminViewUsersPage(request, response);
     }
 
-    // TODO 1: Update session data in every request.
-    // TODO 2: Add a Web filter to check if user is blocked or not.
 }

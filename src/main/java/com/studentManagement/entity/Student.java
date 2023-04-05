@@ -27,7 +27,7 @@ public class Student {
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user_id;
-    @Column(name = "standard", length = 128, nullable = false)
+    @Column(name = "standard", length = 128, nullable = true)
     private String standard;
     @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
     private List<Course> courses = new ArrayList<>();

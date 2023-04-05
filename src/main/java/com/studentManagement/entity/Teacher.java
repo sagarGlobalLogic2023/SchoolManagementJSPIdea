@@ -22,6 +22,9 @@ public class Teacher {
             strategy = "com.studentManagement.util.TeacherIdGenerator"
     )
     private String teacher_id;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user_id;
     @Column(name = "subject", length = 128, nullable = false)
     private String subject;
     @OneToMany

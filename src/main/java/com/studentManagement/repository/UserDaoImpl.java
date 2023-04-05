@@ -1,5 +1,7 @@
 package com.studentManagement.repository;
 
+import com.studentManagement.entity.Student;
+import com.studentManagement.entity.Teacher;
 import com.studentManagement.entity.User;
 import com.studentManagement.util.HibernateUtil;
 import jakarta.persistence.Query;
@@ -18,6 +20,27 @@ public class UserDaoImpl implements IUserDao {
 
             // save user object
             session.persist(user);
+
+            switch (user.getRole()) {
+                case "student" -> {
+                    Student student = new Student();
+                    student.setUser_id(user);
+                    student.setStandard("");
+                    
+                    // save student object
+                    session.persist(student);
+                    break;
+                }
+                case "teacher" -> {
+                    Teacher teacher = new Teacher();
+                    teacher.setUser_id(user);
+                    teacher.setSubject("");
+
+                    // save teacher object
+                    session.persist(teacher);
+                }
+                default -> {}
+            }
 
             // commit the transaction
             transaction.commit();

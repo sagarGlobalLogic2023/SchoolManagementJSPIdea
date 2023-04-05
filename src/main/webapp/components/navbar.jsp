@@ -15,9 +15,15 @@
 
 				<div class="ms-md-auto pe-md-3 d-flex align-items-center">
 					<div>
-						<a href="${pageContext.request.contextPath}/UserServlet?action=profile">
+						<% if (userData.getRole().equals("admin")) {%>
+						<a href="${pageContext.request.contextPath}/UserServlet?action=profile&id=<%=userData.getUser_id()%>">
 							Welcome, <%=userData.getFirstName() %>
 						</a>
+						<%} else {%>
+						<a href="#">
+							Welcome, <%=userData.getFirstName() %>
+						</a>
+						<%}%>
 					</div>
 				</div>
 				<% if (userData == null) {%>
