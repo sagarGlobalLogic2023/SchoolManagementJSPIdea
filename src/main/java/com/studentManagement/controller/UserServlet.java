@@ -37,8 +37,16 @@ public class UserServlet extends HttpServlet {
             case "profile" -> profile(request, response);
             case "loginPage" -> loginPage(request, response);
             case "registerPage" -> registerPage(request, response);
+            case "delete" -> deleteUser(request, response);
             default -> {}
         }
+    }
+
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String id = request.getParameter("id");
+        userService.removeUser(id);
+        String contextPath = "http://localhost:8080" + request.getContextPath();
+        response.sendRedirect(contextPath + "/AdminServlet?action=viewUsers");
     }
 
     private void registerPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -67,18 +75,16 @@ public class UserServlet extends HttpServlet {
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
         var session = request.getSession(false);
-        session.removeAttribute("failedMessage");
-        session.removeAttribute("successMessage");
+        String id = request.getParameter("id");
+        User selectedUser = userService.findUserById(id);
+        session.setAttribute("selectedUser", selectedUser);
         User sessionUser = (User) session.getAttribute("userData");
         if (sessionUser != null) {
-            List<User> users = userService.getUsers();
             User user = userService.findUser(sessionUser.getEmail());
-            users.remove(user);
             session.setAttribute("userData", user);
-            session.setAttribute("userList", users);
             RequestDispatcher dispatcher = null;
             if (user.isActive()) {
-                switch (user.getRole()) {
+                switch (selectedUser.getRole()) {
                     case "admin" -> dispatcher = request.getRequestDispatcher("pages/admin/profile.jsp");
                     case "student" -> dispatcher = request.getRequestDispatcher("pages/student/profile.jsp");
                     case "teacher" -> dispatcher = request.getRequestDispatcher("pages/teacher/profile.jsp");
@@ -207,24 +213,35 @@ public class UserServlet extends HttpServlet {
     }
     private void update(HttpServletRequest request, HttpServletResponse response) throws IOException {
         var session = request.getSession(false);
-        User user = new User();
-        user.setFirstName(request.getParameter("firstName"));
-        user.setLastName(request.getParameter("lastName"));
-        user.setPassword(request.getParameter("password"));
-        user.setEmail(((User) session.getAttribute("userData")).getEmail());
-        user.setRole(((User) session.getAttribute("userData")).getRole());
-        user.setActive(((User) session.getAttribute("userData")).isActive());
-        if (userService.update(user)) {
-            var users = userService.getUsers();
-            users.remove(user);
-            session.setAttribute("userList", users);
-            session.setAttribute("successMessage", "Updated data successfully!");
-            session.setAttribute("userData", user);
+        User sessionUser = (User) session.getAttribute("userData");
+        User selectedUser = (User) session.getAttribute("selectedUser");
+        System.out.println("sessionUser" + sessionUser.getFirstName());
+        System.out.println("selectedUser" + selectedUser.getFirstName());
+        if (selectedUser.getRole().equals("admin")) {
+            sessionUser.setFirstName(request.getParameter("firstName"));
+            sessionUser.setLastName(request.getParameter("lastName"));
+            sessionUser.setPassword(request.getParameter("password"));
+            if (userService.update(sessionUser)) {
+                session.setAttribute("successMessage", "Updated data successfully!");
+                session.setAttribute("userData", sessionUser);
+            }
+            else
+                session.setAttribute("failedMessage", "Some problem occurred at the server!");
+            String contextPath = "http://localhost:8080" + request.getContextPath();
+            response.sendRedirect(contextPath + "/UserServlet?action=profile&id=" + sessionUser.getUser_id());
+        } else {
+            selectedUser.setFirstName(request.getParameter("firstName"));
+            selectedUser.setLastName(request.getParameter("lastName"));
+            selectedUser.setPassword(request.getParameter("password"));
+            if (userService.update(selectedUser)) {
+                session.setAttribute("successMessage", "Updated data successfully!");
+                session.setAttribute("selectedUser", selectedUser);
+            }
+            else
+                session.setAttribute("failedMessage", "Some problem occurred at the server!");
+            String contextPath = "http://localhost:8080" + request.getContextPath();
+            response.sendRedirect(contextPath + "/UserServlet?action=profile&id=" + selectedUser.getUser_id());
         }
-        else
-            session.setAttribute("failedMessage", "Some problem occurred at the server!");
-        response.sendRedirect("http://localhost:8080/bookstoreServlet_war_exploded/pages/profile.jsp");
-        return;
 
     }
     private void makeUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

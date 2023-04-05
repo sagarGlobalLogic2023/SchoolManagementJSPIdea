@@ -94,11 +94,11 @@ public class AdminServlet extends HttpServlet {
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
         var session = request.getSession(false);
-
         if (session.getAttribute("userData") != null) {
             User user = (User) session.getAttribute("userData");
-            List<User> users = (List<User>) session.getAttribute("userList");
+            List<User> users = userService.getUsers();
             users.remove(user);
+            session.setAttribute("userList", users);
             if (Objects.equals(user.getRole(), "admin") && user.isActive()) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("pages/admin/view-users.jsp");
                 dispatcher.include(request, response);
@@ -113,7 +113,8 @@ public class AdminServlet extends HttpServlet {
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
         var session = request.getSession(false);
-
+        session.removeAttribute("failedMessage");
+        session.removeAttribute("successMessage");
         if (session.getAttribute("userData") != null) {
             User user = (User) session.getAttribute("userData");
             if (Objects.equals(user.getRole(), "admin") && user.isActive()) {

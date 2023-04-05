@@ -20,4 +20,6 @@ public interface IUserDao {
     void block(User user);
 
     void unBlock(User user);
+
+    User getUserById(String id);
 }

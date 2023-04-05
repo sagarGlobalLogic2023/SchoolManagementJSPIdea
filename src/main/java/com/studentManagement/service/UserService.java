@@ -17,6 +17,9 @@ public class UserService {
     public User findUser(String email) {
         return userDao.getUserByEmail(email);
     }
+    public User findUserById(String id) {
+        return userDao.getUserById(id);
+    }
     public List<User> getUsers() {
         return userDao.findAll();
     }
@@ -30,6 +33,9 @@ public class UserService {
     public void makeUser(String email) {
         var user = userDao.getUserByEmail(email);
         userDao.makeUser(user);
+    }
+    public void removeUser(String id) {
+        userDao.removeUser(id);
     }
 
     public void register(HttpServletRequest request, HttpServletResponse response) {
@@ -61,7 +67,6 @@ public class UserService {
             e.printStackTrace();
         }
     }
-
     public void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");

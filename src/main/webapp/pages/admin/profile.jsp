@@ -153,7 +153,7 @@
                                     </div>
                                     <div class="col-4">
                                         <input type="text" class="form-control" placeholder="First Name" name="firstName"
-                                               aria-label="Name" aria-describedby="email-addon" required value=<%=userData.getFirstName()%>>
+                                               aria-label="Name" aria-describedby="email-addon" required value=<%=selectedUser.getFirstName()%>>
                                     </div>
                                     <div class="col-2">
                                         <p class="text-center">Last Name</p>
@@ -161,7 +161,7 @@
                                     <div class="col-4">
                                         <input type="text" class="form-control" placeholder="Last Name"
                                                name="lastName" aria-label="Name" aria-describedby="email-addon"
-                                               required value=<%=userData.getLastName()%>>
+                                               required value=<%=selectedUser.getLastName()%>>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
@@ -171,10 +171,11 @@
                                     <div class="col-4">
                                         <input type="text" class="form-control" placeholder="Password"
                                                name="password" aria-label="Name" required aria-describedby="inputGroup-sizing-lg"
-                                               value=<%=userData.getPassword()%>>
+                                               value=<%=selectedUser.getPassword()%>>
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-6"></div>
                                     <div class="col-6">
                                         <button type="submit" class="btn bg-gradient-dark w-100 mb-2">Update</button>
                                     </div>

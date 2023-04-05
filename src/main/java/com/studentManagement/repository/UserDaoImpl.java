@@ -26,7 +26,7 @@ public class UserDaoImpl implements IUserDao {
                     Student student = new Student();
                     student.setUser_id(user);
                     student.setStandard("");
-                    
+
                     // save student object
                     session.persist(student);
                     break;
@@ -114,12 +114,13 @@ public class UserDaoImpl implements IUserDao {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("UPDATE User set firstName = :firstName, lastName = :lastName, password = :password, role = :role where email = :username");
+            Query query = session.createQuery("UPDATE User set firstName = :firstName, lastName = :lastName, password = :password, role = :role, isActive = :isActive where email = :username");
             query.setParameter("firstName", user.getFirstName());
             query.setParameter("lastName", user.getLastName());
             query.setParameter("password", user.getPassword());
             query.setParameter("username", user.getEmail());
-            query.setParameter("isAdmin", user.getRole());
+            query.setParameter("isActive", user.isActive());
+            query.setParameter("role", user.getRole());
             int result = query.executeUpdate();
             System.out.println("Rows affected: " + result);
             transaction.commit();
@@ -189,6 +190,94 @@ public class UserDaoImpl implements IUserDao {
         } catch (Exception e) {
             //if (transaction != null) transaction.rollback();
             e.printStackTrace();
+        }
+    }
+    @Override
+    public User getUserById(String id) {
+        Transaction transaction = null;
+        User user = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            user = (User) session.createQuery("from User where id=:id")
+                    .setParameter("id", id)
+                    .uniqueResult();
+            transaction.commit();
+        } catch (Exception exception) {
+            if (transaction != null) transaction.rollback();
+            exception.printStackTrace();
+        }
+        return user;
+    }
+    public Student getStudentByUserId(User user) {
+        Transaction transaction = null;
+        Student student = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            student = (Student) session.createQuery("from Student where user_id=:id")
+                    .setParameter("id", user)
+                    .uniqueResult();
+            transaction.commit();
+        } catch (Exception exception) {
+            /*if (transaction != null) transaction.rollback();*/
+            exception.printStackTrace();
+        }
+        return student;
+    }
+    public Teacher getTeacherByUserId(User user) {
+        Transaction transaction = null;
+        Teacher teacher = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            teacher = (Teacher) session.createQuery("from Teacher where user_id=:id")
+                    .setParameter("id", user)
+                    .uniqueResult();
+            transaction.commit();
+        } catch (Exception exception) {
+            /*if (transaction != null) transaction.rollback();*/
+            exception.printStackTrace();
+        }
+        return teacher;
+    }
+    public boolean removeUser(String id) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // start a transaction
+            transaction = session.beginTransaction();
+
+            // Delete a user object
+            User user = getUserById(id);
+            switch (user.getRole()) {
+                case "student" -> {
+                    Student student = getStudentByUserId(user);
+                    session.remove(student);
+                    session.remove(user);
+                    break;
+                }
+                case "teacher" -> {
+                    Teacher teacher = getTeacherByUserId(user);
+                    session.remove(teacher);
+                    session.remove(user);
+                }
+                default -> {}
+            }
+
+            /*if (student != null) {
+                String hql = "DELETE FROM User WHERE id = :id";
+                Query query = session.createQuery(hql);
+                query.setParameter("id", id);
+                int result = query.executeUpdate();
+                System.out.println("Rows affected: " + result);
+            }*/
+
+            // commit transaction
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            /*if (transaction != null) {
+                transaction.rollback();
+            }*/
+            e.printStackTrace();
+            return false;
         }
     }
 }

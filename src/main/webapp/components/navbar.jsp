@@ -4,6 +4,7 @@
 
 <%
 	User userData = (User) session.getAttribute("userData");
+	User selectedUser = (User) session.getAttribute("selectedUser");
 %>
 
 	<nav
