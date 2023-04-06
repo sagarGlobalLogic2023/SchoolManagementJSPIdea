@@ -1,6 +1,5 @@
 package com.studentManagement.repository;
 
-import com.studentManagement.entity.Course;
 import com.studentManagement.entity.Teacher;
 import com.studentManagement.entity.User;
 import com.studentManagement.util.HibernateUtil;
@@ -9,7 +8,8 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class TeacherDaoImpl {
+public class TeacherDaoImpl implements TeacherDao{
+    @Override
     public List<Teacher> findAll() {
         Transaction transaction = null;
         List<Teacher> teachers = null;
@@ -30,6 +30,7 @@ public class TeacherDaoImpl {
         return teachers;
     }
 
+    @Override
     public Teacher find(User user) {
         Transaction transaction = null;
         Teacher teacher = null;

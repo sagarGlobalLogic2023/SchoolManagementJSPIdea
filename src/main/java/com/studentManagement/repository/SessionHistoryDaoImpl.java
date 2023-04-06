@@ -8,7 +8,8 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class SessionHistoryDaoImpl {
+public class SessionHistoryDaoImpl implements SessionHistoryDao{
+    @Override
     public void addSession(SessionHistory sessionHistory) {
         Transaction transaction = null;
         try (var session = HibernateUtil.getSessionFactory().openSession()) {
@@ -25,6 +26,7 @@ public class SessionHistoryDaoImpl {
             e.printStackTrace();
         }
     }
+    @Override
     public void updateSession(SessionHistory sessionHistory) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -43,6 +45,7 @@ public class SessionHistoryDaoImpl {
             e.printStackTrace();
         }
     }
+    @Override
     public List<SessionHistory> getAllSessions(String email) {
         Transaction transaction = null;
         List<SessionHistory> sessionHistories = null;
@@ -64,7 +67,7 @@ public class SessionHistoryDaoImpl {
         }
         return sessionHistories;
     }
-
+    @Override
     public int getTotalDue(String email) {
         Transaction transaction = null;
         int totalDue = 0;

@@ -3,13 +3,13 @@ package com.studentManagement.repository;
 import com.studentManagement.entity.Student;
 import com.studentManagement.entity.User;
 import com.studentManagement.util.HibernateUtil;
-import jakarta.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class StudentDaoImpl {
+public class StudentDaoImpl implements StudentDao{
+    @Override
     public List<Student> findAll() {
         Transaction transaction = null;
         List<Student> students = null;
@@ -29,7 +29,7 @@ public class StudentDaoImpl {
         }
         return students;
     }
-
+    @Override
     public Student find(String rollNumber) {
         Transaction transaction = null;
         Student student = null;
@@ -45,7 +45,7 @@ public class StudentDaoImpl {
         }
         return student;
     }
-
+    @Override
     public void update(Student student) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -56,7 +56,7 @@ public class StudentDaoImpl {
             e.printStackTrace();
         }
     }
-
+    @Override
     public Student findByUser(User user) {
         Transaction transaction = null;
         Student student = null;

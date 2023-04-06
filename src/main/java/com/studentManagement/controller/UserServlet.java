@@ -32,7 +32,6 @@ public class UserServlet extends HttpServlet {
             case "makeUser" -> makeUser(request, response);
             case "adminViewUsers" -> adminViewUsers(request, response);
             case "adminHome" -> adminHome(request, response);
-            case "addBook" -> addBook(request, response);
             case "viewBill" -> viewBill(request, response);
             case "profile" -> profile(request, response);
             case "loginPage" -> loginPage(request, response);
@@ -70,7 +69,11 @@ public class UserServlet extends HttpServlet {
             default -> {}
         }
     }
+
+    // Redirecting to user profile page
     private void profile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Blocking cache save of browser so that on pressing back button in browser, it will not load the
+        // page from cache and instead check again if the user is logged in and unBlocked.
         response.setHeader("Cache-control","no-store");
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
@@ -85,6 +88,7 @@ public class UserServlet extends HttpServlet {
             RequestDispatcher dispatcher = null;
             if (user.isActive()) {
                 switch (selectedUser.getRole()) {
+                    // redirecting to a profile page corresponding to the role of the user
                     case "admin" -> dispatcher = request.getRequestDispatcher("pages/admin/profile.jsp");
                     case "student" -> dispatcher = request.getRequestDispatcher("pages/student/profile.jsp");
                     case "teacher" -> dispatcher = request.getRequestDispatcher("pages/teacher/profile.jsp");
@@ -96,7 +100,11 @@ public class UserServlet extends HttpServlet {
         }
         loginPage(request, response);
     }
+
+    // Redirecting to view bill page
     private void viewBill(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Blocking cache save of browser so that on pressing back button in browser, it will not load the
+        // page from cache and instead check again if the user is logged in and unBlocked.
         response.setHeader("Cache-control","no-store");
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
@@ -121,23 +129,11 @@ public class UserServlet extends HttpServlet {
         }
         loginPage(request, response);
     }
-    private void addBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setHeader("Cache-control","no-store");
-        response.setHeader("Pragma","no-cache");
-        response.setDateHeader("Expires", -1);
-        var session = request.getSession(false);
 
-        if (session != null && session.getAttribute("userData") != null) {
-            User user = (User) session.getAttribute("userData");
-            if (user.getRole() == "admin") {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("pages/admin/add-book.jsp");
-                dispatcher.include(request, response);
-                return;
-            }
-        }
-        loginPage(request, response);
-    }
+    // Redirecting to admin home page
     private void adminHome(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Blocking cache save of browser so that on pressing back button in browser, it will not load the
+        // page from cache and instead check again if the user is logged in and unBlocked.
         response.setHeader("Cache-control","no-store");
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
@@ -193,6 +189,7 @@ public class UserServlet extends HttpServlet {
             sessionHistory.setEmail(user.getEmail());
             sessionHistory.setEnd_date(String.valueOf(new Date(session.getLastAccessedTime())));
             sessionHistory.setStart_date(sessionData.getStart_date());
+            // converting date stored in string to date object
             SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
             Date startTime = null;
             Date endTime = null;
@@ -244,6 +241,9 @@ public class UserServlet extends HttpServlet {
         }
 
     }
+
+    // change role from admin to user
+    @Deprecated
     private void makeUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         var session = request.getSession(false);
         var email = request.getParameter("email");
@@ -253,6 +253,9 @@ public class UserServlet extends HttpServlet {
         session.setAttribute("userList", userList);
         adminViewUsersPage(request, response);
     }
+
+    // change role to admin
+    @Deprecated
     private void makeAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         var session = request.getSession(false);
         var email = request.getParameter("email");

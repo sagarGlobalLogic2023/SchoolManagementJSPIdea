@@ -16,7 +16,7 @@ import java.util.Objects;
 public class User {
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(generator = "user_seq")
+    @GeneratedValue(generator = "user_seq") // custom User ID generator is used
     @GenericGenerator(
             name = "user_seq",
             strategy = "com.studentManagement.util.UserIdGenerator"

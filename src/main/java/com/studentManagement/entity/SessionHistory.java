@@ -12,7 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class SessionHistory {
     @Id
     @Column(name = "session_id")
-    @GeneratedValue(generator = "session_seq")
+    @GeneratedValue(generator = "session_seq") // custom Session ID generator is used
     @GenericGenerator(
             name = "session_seq",
             strategy = "com.studentManagement.util.SessionIdGenerator"

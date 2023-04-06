@@ -1,10 +1,12 @@
 package com.studentManagement.repository;
 
+import com.studentManagement.entity.Student;
+import com.studentManagement.entity.Teacher;
 import com.studentManagement.entity.User;
 
 import java.util.List;
 
-public interface IUserDao {
+public interface UserDao {
     boolean addUser(User user);
 
     User getUserByEmail(String email);
@@ -22,4 +24,10 @@ public interface IUserDao {
     void unBlock(User user);
 
     User getUserById(String id);
+
+    Student getStudentByUserId(User user);
+
+    Teacher getTeacherByUserId(User user);
+
+    void removeUser(String id);
 }

@@ -25,6 +25,9 @@ public class HibernateUtil {
                 // Hibernate settings equivalent to hibernate.cfg.xml properties
                 Properties settings = new Properties();
                 settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
+
+                // will create school_management schema if not already exists
+                // otherwise it will get the existing one
                 settings.put(Environment.URL, "jdbc:mysql://localhost:3306/school_management?createDatabaseIfNotExist=true");
                 settings.put(Environment.USER, "root");
                 settings.put(Environment.PASS, "root");
@@ -38,6 +41,8 @@ public class HibernateUtil {
 
                 configuration.setProperties(settings);
 
+                // This automation automatically creates tables corresponding to all the entities found in
+                // entity folder
                 for (var cls : getEntityClassesFromPackage("com.studentManagement.entity"))
                     configuration.addAnnotatedClass(cls);
 
@@ -51,6 +56,8 @@ public class HibernateUtil {
         }
         return sessionFactory;
     }
+
+    // Getting class names and converting to entities
     public static List<Class<?>> getEntityClassesFromPackage(String packageName) throws ClassNotFoundException, URISyntaxException {
         List<String> classNames = getClassNamesFromPackage(packageName);
         List<Class<?>> classes = new ArrayList<Class<?>>();
@@ -68,6 +75,9 @@ public class HibernateUtil {
 
         return classes;
     }
+
+    // Automation using IO
+    // Getting all the class names in Entity folder
     public static ArrayList<String> getClassNamesFromPackage(String packageName) throws URISyntaxException, ClassNotFoundException, URISyntaxException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         ArrayList<String> names = new ArrayList<String>();

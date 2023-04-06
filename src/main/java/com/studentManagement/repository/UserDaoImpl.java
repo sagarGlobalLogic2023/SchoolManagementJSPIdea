@@ -10,7 +10,7 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class UserDaoImpl implements IUserDao {
+public class UserDaoImpl implements UserDao {
     @Override
     public boolean addUser(User user) {
         Transaction transaction = null;
@@ -21,6 +21,7 @@ public class UserDaoImpl implements IUserDao {
             // save user object
             session.persist(user);
 
+            // depending on the role, add to the corresponding table as well
             switch (user.getRole()) {
                 case "student" -> {
                     Student student = new Student();
@@ -208,6 +209,8 @@ public class UserDaoImpl implements IUserDao {
         }
         return user;
     }
+
+    @Override
     public Student getStudentByUserId(User user) {
         Transaction transaction = null;
         Student student = null;
@@ -223,6 +226,7 @@ public class UserDaoImpl implements IUserDao {
         }
         return student;
     }
+    @Override
     public Teacher getTeacherByUserId(User user) {
         Transaction transaction = null;
         Teacher teacher = null;
@@ -238,7 +242,8 @@ public class UserDaoImpl implements IUserDao {
         }
         return teacher;
     }
-    public boolean removeUser(String id) {
+    @Override
+    public void removeUser(String id) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start a transaction
@@ -271,13 +276,11 @@ public class UserDaoImpl implements IUserDao {
 
             // commit transaction
             transaction.commit();
-            return true;
         } catch (Exception e) {
             /*if (transaction != null) {
                 transaction.rollback();
             }*/
             e.printStackTrace();
-            return false;
         }
     }
 }

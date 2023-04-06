@@ -17,7 +17,7 @@ import java.util.List;
 public class Course {
     @Id
     @Column(name = "course_id")
-    @GeneratedValue(generator = "course_seq")
+    @GeneratedValue(generator = "course_seq") // custom Course ID generator is used
     @GenericGenerator(
             name = "course_seq",
             strategy = "com.studentManagement.util.CourseIdGenerator"

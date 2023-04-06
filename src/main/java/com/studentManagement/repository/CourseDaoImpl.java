@@ -1,16 +1,14 @@
 package com.studentManagement.repository;
 
 import com.studentManagement.entity.Course;
-import com.studentManagement.entity.Student;
-import com.studentManagement.entity.Teacher;
-import com.studentManagement.entity.User;
 import com.studentManagement.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class CourseDaoImpl {
+public class CourseDaoImpl implements CourseDao{
+    @Override
     public List<Course> findAll() {
         Transaction transaction = null;
         List<Course> courses = null;
@@ -31,6 +29,7 @@ public class CourseDaoImpl {
         return courses;
     }
 
+    @Override
     public void add(Course course) {
         Transaction transaction = null;
         try (var session = HibernateUtil.getSessionFactory().openSession()) {

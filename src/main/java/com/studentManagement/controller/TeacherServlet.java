@@ -41,7 +41,10 @@ public class TeacherServlet extends HttpServlet {
         attendance(request, response);
     }
 
+    // Redirecting to attendance page
     private void attendance(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Blocking cache save of browser so that on pressing back button in browser, it will not load the
+        // page from cache and instead check again if the user is logged in and unBlocked.
         response.setHeader("Cache-control","no-store");
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
@@ -60,7 +63,10 @@ public class TeacherServlet extends HttpServlet {
         response.sendRedirect(contextPath + "/UserServlet?action=loginPage");
     }
 
+    // Redirecting to teacher home page
     private void homePage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Blocking cache save of browser so that on pressing back button in browser, it will not load the
+        // page from cache and instead check again if the user is logged in and unBlocked.
         response.setHeader("Cache-control","no-store");
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);

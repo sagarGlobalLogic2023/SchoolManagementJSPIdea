@@ -18,7 +18,7 @@ import java.util.Objects;
 public class Student {
     @Id
     @Column(name = "roll_number")
-    @GeneratedValue(generator = "student_seq")
+    @GeneratedValue(generator = "student_seq") // custom Roll Number generator is used
     @GenericGenerator(
             name = "student_seq",
             strategy = "com.studentManagement.util.RollNumberGenerator"

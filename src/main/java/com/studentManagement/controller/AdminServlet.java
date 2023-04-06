@@ -40,8 +40,46 @@ public class AdminServlet extends HttpServlet {
             default -> {}
         }
     }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setHeader("Cache-control","no-store");
+        response.setHeader("Pragma","no-cache");
+        response.setDateHeader("Expires", -1);
+        String action = request.getParameter("action");
+        switch (action) {
+            case "addCourse" -> courseService.addCourse(request, response);
+            default -> {}
+        }
+    }
 
+    // Unblocking user
+    private void unBlockUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        var session = request.getSession(false);
+        var email = request.getParameter("email");
+        adminService.unblock(email);
+        var userList = userService.getUsers();
+        userList.remove((User) session.getAttribute("userData"));
+        session.setAttribute("userList", userList);
+        String contextPath = "http://localhost:8080" + request.getContextPath();
+        response.sendRedirect(contextPath + "/AdminServlet?action=viewUsers");
+    }
+
+    // Blocking user
+    private void blockUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        var session = request.getSession(false);
+        var email = request.getParameter("email");
+        adminService.block(email);
+        var userList = userService.getUsers();
+        userList.remove((User) session.getAttribute("userData"));
+        session.setAttribute("userList", userList);
+        String contextPath = "http://localhost:8080" + request.getContextPath();
+        response.sendRedirect(contextPath + "/AdminServlet?action=viewUsers");
+    }
+
+    // Redirecting to new-course page
     private void newCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Blocking cache save of browser so that on pressing back button in browser, it will not load the
+        // page from cache and instead check again if the user is logged in and unBlocked.
         response.setHeader("Cache-control","no-store");
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
@@ -60,27 +98,10 @@ public class AdminServlet extends HttpServlet {
         response.sendRedirect(contextPath + "/UserServlet?action=loginPage");
     }
 
-    private void unBlockUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        var session = request.getSession(false);
-        var email = request.getParameter("email");
-        adminService.unblock(email);
-        var userList = userService.getUsers();
-        userList.remove((User) session.getAttribute("userData"));
-        session.setAttribute("userList", userList);
-        String contextPath = "http://localhost:8080" + request.getContextPath();
-        response.sendRedirect(contextPath + "/AdminServlet?action=viewUsers");
-    }
-    private void blockUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        var session = request.getSession(false);
-        var email = request.getParameter("email");
-        adminService.block(email);
-        var userList = userService.getUsers();
-        userList.remove((User) session.getAttribute("userData"));
-        session.setAttribute("userList", userList);
-        String contextPath = "http://localhost:8080" + request.getContextPath();
-        response.sendRedirect(contextPath + "/AdminServlet?action=viewUsers");
-    }
+   // Redirecting to courses page
     private void coursesPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Blocking cache save of browser so that on pressing back button in browser, it will not load the
+        // page from cache and instead check again if the user is logged in and unBlocked.
         response.setHeader("Cache-control","no-store");
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
@@ -98,7 +119,11 @@ public class AdminServlet extends HttpServlet {
         String contextPath = "http://localhost:8080" + request.getContextPath();
         response.sendRedirect(contextPath + "/UserServlet?action=loginPage");
     }
+
+    // Redirecting to sessions page
     private void sessionsPage(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        // Blocking cache save of browser so that on pressing back button in browser, it will not load the
+        // page from cache and instead check again if the user is logged in and unBlocked.
         response.setHeader("Cache-control","no-store");
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
@@ -116,7 +141,11 @@ public class AdminServlet extends HttpServlet {
         response.sendRedirect(contextPath + "/UserServlet?action=loginPage");
 
     }
+
+    // Redirecting to users page
     private void usersPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Blocking cache save of browser so that on pressing back button in browser, it will not load the
+        // page from cache and instead check again if the user is logged in and unBlocked.
         response.setHeader("Cache-control","no-store");
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
@@ -135,7 +164,11 @@ public class AdminServlet extends HttpServlet {
         String contextPath = "http://localhost:8080" + request.getContextPath();
         response.sendRedirect(contextPath + "/UserServlet?action=loginPage");
     }
+
+    // Redirecting to admin home page
     private void homePage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Blocking cache save of browser so that on pressing back button in browser, it will not load the
+        // page from cache and instead check again if the user is logged in and unBlocked.
         response.setHeader("Cache-control","no-store");
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
@@ -152,16 +185,5 @@ public class AdminServlet extends HttpServlet {
         }
         String contextPath = "http://localhost:8080" + request.getContextPath();
         response.sendRedirect(contextPath + "/UserServlet?action=loginPage");
-    }
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setHeader("Cache-control","no-store");
-        response.setHeader("Pragma","no-cache");
-        response.setDateHeader("Expires", -1);
-        String action = request.getParameter("action");
-        switch (action) {
-            case "addCourse" -> courseService.addCourse(request, response);
-            default -> {}
-        }
     }
 }

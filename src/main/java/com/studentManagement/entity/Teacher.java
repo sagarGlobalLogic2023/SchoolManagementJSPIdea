@@ -14,7 +14,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Teacher {
     @Id
     @Column(name = "teacher_id")
-    @GeneratedValue(generator = "teacher_seq")
+    @GeneratedValue(generator = "teacher_seq") // custom Teacher ID generator is used
     @GenericGenerator(
             name = "teacher_seq",
             strategy = "com.studentManagement.util.TeacherIdGenerator"

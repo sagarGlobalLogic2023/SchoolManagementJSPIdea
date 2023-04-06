@@ -27,12 +27,18 @@ public class StudentServlet extends HttpServlet {
             default -> {}
         }
     }
+
+    // Redirecting to student home page
     private void homePage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Blocking cache save of browser so that on pressing back button in browser, it will not load the
+        // page from cache and instead check again if the user is logged in and unBlocked.
         response.setHeader("Cache-control","no-store");
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
         var session = request.getSession(false);
         User sessionUser = (User) session.getAttribute("userData");
+
+        // removing any previously stored validation messages
         session.removeAttribute("failedMessage");
         session.removeAttribute("successMessage");
         if (sessionUser != null) {
