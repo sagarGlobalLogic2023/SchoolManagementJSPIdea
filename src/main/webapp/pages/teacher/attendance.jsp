@@ -41,7 +41,7 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link  active" href="${pageContext.request.contextPath}/TeacherServlet?action=homePage">
+                <a class="nav-link " href="${pageContext.request.contextPath}/TeacherServlet?action=homePage">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1"
                              xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -64,7 +64,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link  " href="${pageContext.request.contextPath}/TeacherServlet?action=attendance">
+                <a class="nav-link active" href="${pageContext.request.contextPath}/TeacherServlet?action=attendance">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1"
                              xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -112,9 +112,6 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
                                         Attendance
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
-                                        Score
-                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -129,30 +126,21 @@
                                         if (student.isPresent()) {
                                     %>
                                     <td class="align-middle text-center">
-                                        <span class="text-xs font-weight-bold">Present</span>
+                                        <a class="btn btn-link text-dark px-3 mb-0" href="${pageContext.request.contextPath}/UserServlet?action=profile"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>
+                                            Make Absent
+                                        </a>
                                     </td>
                                     <%
-                                        } else {
+                                    } else {
                                     %>
                                     <td class="align-middle text-center">
-                                        <span class="text-xs font-weight-bold">Absent</span>
+                                        <a class="btn btn-link text-dark px-3 mb-0" href="${pageContext.request.contextPath}/UserServlet?action=profile"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>
+                                            Make Present
+                                        </a>
                                     </td>
                                     <%
                                         }
                                     %>
-                                    <td class="align-middle text-center">
-                                        <div class="row">
-                                            <form action="post">
-                                                <div class="col-6">
-                                                    <input type="text" name="score" value="<%=student.getScore()%>" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="text-sm font-weight-bold mb-0"><%=student.getScore()%></p>
-                                                </div>
-                                            </form>
-                                        </div>
-
-                                    </td>
                                 </tr>
                                 <%
                                     }

@@ -1,7 +1,6 @@
 package com.studentManagement.repository;
 
 import com.studentManagement.entity.Course;
-import com.studentManagement.entity.Student;
 import com.studentManagement.entity.Teacher;
 import com.studentManagement.entity.User;
 import com.studentManagement.util.HibernateUtil;
@@ -10,16 +9,16 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class CourseDaoImpl {
-    public List<Course> findAll() {
+public class TeacherDaoImpl {
+    public List<Teacher> findAll() {
         Transaction transaction = null;
-        List<Course> courses = null;
+        List<Teacher> teachers = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start transaction
             transaction = session.beginTransaction();
 
             // get all books
-            courses = session.createQuery("from Course", Course.class).list();
+            teachers = session.createQuery("from Teacher ", Teacher.class).list();
 
             // commit the transaction
             transaction.commit();
@@ -28,22 +27,21 @@ public class CourseDaoImpl {
             if (transaction != null) transaction.rollback();
             e.printStackTrace();
         }
-        return courses;
+        return teachers;
     }
 
-    public void add(Course course) {
+    public Teacher find(User user) {
         Transaction transaction = null;
-        try (var session = HibernateUtil.getSessionFactory().openSession()) {
-            // start transaction
+        Teacher teacher = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-
-            // save user object
-            session.persist(course);
-
-            // commit the transaction
+            teacher = (Teacher) session.createQuery("from Teacher where user_id=:id")
+                    .setParameter("id", user)
+                    .uniqueResult();
             transaction.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
+        return teacher;
     }
 }

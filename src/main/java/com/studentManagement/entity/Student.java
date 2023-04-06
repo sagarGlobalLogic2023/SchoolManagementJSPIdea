@@ -29,6 +29,10 @@ public class Student {
     private User user_id;
     @Column(name = "standard", length = 128, nullable = true)
     private String standard;
+    @Column(name = "score")
+    private double score;
+    @Column(name = "isPresent", nullable = false)
+    private boolean isPresent;
     @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
     private List<Course> courses = new ArrayList<>();
     @Override

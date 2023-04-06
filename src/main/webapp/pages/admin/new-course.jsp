@@ -1,8 +1,9 @@
+<%@ page import="com.studentManagement.entity.Teacher" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.studentManagement.entity.Course" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<!DOCTYPE html>
+         pageEncoding="UTF-8"%>
+
 <%
     response.setHeader("Cache-control","no-store");
     response.setHeader("Pragma","no-cache");
@@ -11,23 +12,19 @@
         response.sendRedirect("../index.jsp");
     } else {
 %>
-<html lang="en">
-
-
-<%
-    List<Course> courses = (List<Course>) session.getAttribute("courseList");
-%>
-
+<html>
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>
         School
     </title>
 
-    <%@ include file="../../components/allCss.jsp" %>
+    <%@ include file="../../components/allCss.jsp"%>
 </head>
-
+<%
+    List<User> teachers = (List<User>) session.getAttribute("teacherList");
+%>
 <body class="g-sidenav-show  bg-gray-100">
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 "
        id="sidenav-main">
@@ -142,73 +139,54 @@
     <!-- Navbar -->
     <%@ include file="../../components/navbar.jsp" %>
     <!-- End Navbar -->
-
-    <div class="container-fluid py-4">
-        <div class="row">
-            <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-header pb-0">
-                        <h6>Course Table</h6>
-                        <div class="float-end">
-                            <a href="${pageContext.request.contextPath}/AdminServlet?action=newCourse" class="text-secondary text-danger font-weight-bold text-xs"
-                               data-toggle="tooltip" data-original-title="Edit user">
-                                <button type="button" class="btn btn-primary btn-sm">Add New</button>
-                            </a>
+    <section >
+        <div class="container">
+            <div class="row mt-5">
+                <div >
+                    <div class="card ">
+                        <div class="card-header text-center pt-4">
+                            <h5>Add a course</h5>
+                            <c:if test = "${not empty successMessage}">
+                                <p class="text-center text-success">${successMessage}</p>
+                                <c:remove var="successMessage" scope="session"/>
+                            </c:if>
+                            <c:if test = "${not empty failedMessage}">
+                                <p class="text-center text-danger">${failedMessage}</p>
+                                <c:remove var="failedMessage" scope="session"/>
+                            </c:if>
                         </div>
-                    </div>
-
-                    <div class="card-body px-0 pt-0 pb-2">
-                        <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0">
-                                <thead>
-                                <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Name
-                                    </th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Role
-                                    </th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Actions
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <%
-                                    for (Course course : courses) {
-
-                                %>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">
-                                                    <%=course.getSubject()%>
-                                                </h6>
-                                            </div>
+                        <div class="card-body">
+                            <form role="form text-left" method="post" action="${pageContext.request.contextPath}/AdminServlet?action=addCourse">
+                                <div class="mb-3 row">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" placeholder="Subject" name="subject" aria-label="Name" aria-describedby="email-addon" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <select name="teacher" class="form-control" id="exampleFormControlSelect1">
+                                                <option value="" disabled selected hidden>Appoint a teacher</option>
+                                                <%
+                                                    for (User teacher : teachers) {
+                                                %>
+                                                    <option value="<%=teacher.getUser_id()%>"><%=teacher.getFirstName() + " "%><%=teacher.getLastName()%></option>
+                                                <%}%>
+                                            </select>
                                         </div>
-                                    </td>
-                                    <td class="align-middle text-center text-sm">
-                                        <span class="badge badge-sm bg-gradient-warning">Admin</span>
-                                    </td>
-                                    <td class="align-middle text-center">
-                                        <a href="${pageContext.request.contextPath}/UserServlet?action=viewBill%>" class="text-secondary text-success font-weight-bold text-xs mx-2"
-                                           data-toggle="tooltip" data-original-title="Edit user">
-                                            Edit Course
-                                        </a>
-                                    </td>
-                                </tr>
-                                <%}%>
-                                </tbody>
-                            </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-6">
+                                        <button type="submit" class="btn bg-gradient-dark w-100 mb-2">Add</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-    </div>
+    </section>
 </body>
-
 </html>
 <%}%>

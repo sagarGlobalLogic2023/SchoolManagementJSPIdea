@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.List;
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -27,7 +25,5 @@ public class Teacher {
     private User user_id;
     @Column(name = "subject", length = 128, nullable = false)
     private String subject;
-    @OneToMany
-    private List<Course> courses;
 
 }

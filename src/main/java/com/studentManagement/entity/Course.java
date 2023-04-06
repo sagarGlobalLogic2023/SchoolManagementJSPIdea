@@ -28,4 +28,18 @@ public class Course {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "student_course")
     private List<Student> students = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "course_id='" + course_id + '\'' +
+                ", subject='" + subject + '\'' +
+                ", students=" + students +
+                ", teachers=" + teachers +
+                '}';
+    }
+
+    @OneToMany(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "course_id")
+    private List<Teacher> teachers;
 }
