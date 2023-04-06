@@ -3,6 +3,7 @@ package com.studentManagement.controller;
 import com.studentManagement.entity.Student;
 import com.studentManagement.entity.User;
 import com.studentManagement.service.StudentService;
+import com.studentManagement.service.UserService;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -14,6 +15,7 @@ import java.util.Objects;
 @WebServlet(name = "TeacherServlet", value = "/TeacherServlet")
 public class TeacherServlet extends HttpServlet {
     StudentService studentService = new StudentService();
+    UserService userService = new UserService();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setHeader("Cache-control","no-store");
@@ -53,7 +55,8 @@ public class TeacherServlet extends HttpServlet {
         session.setAttribute("studentList", students);
         if (session.getAttribute("userData") != null) {
             User user = (User) session.getAttribute("userData");
-            if (Objects.equals(user.getRole(), "teacher") && user.isActive()) {
+            User u = userService.findUserById(user.getUser_id());
+            if (Objects.equals(u.getRole(), "teacher") && u.isActive()) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("pages/teacher/attendance.jsp");
                 dispatcher.include(request, response);
                 return;
@@ -77,7 +80,8 @@ public class TeacherServlet extends HttpServlet {
         session.setAttribute("studentList", students);
         if (session.getAttribute("userData") != null) {
             User user = (User) session.getAttribute("userData");
-            if (Objects.equals(user.getRole(), "teacher") && user.isActive()) {
+            User u = userService.findUserById(user.getUser_id());
+            if (Objects.equals(u.getRole(), "teacher") && u.isActive()) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("pages/teacher/home.jsp");
                 dispatcher.include(request, response);
                 return;
