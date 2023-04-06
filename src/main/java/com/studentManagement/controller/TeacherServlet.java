@@ -65,6 +65,8 @@ public class TeacherServlet extends HttpServlet {
         response.setHeader("Pragma","no-cache");
         response.setDateHeader("Expires", -1);
         var session = request.getSession(false);
+        session.removeAttribute("failedMessage");
+        session.removeAttribute("successMessage");
         List<Student> students = studentService.getAllStudents();
         session.setAttribute("studentList", students);
         if (session.getAttribute("userData") != null) {

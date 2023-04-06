@@ -13,18 +13,17 @@
 		<div class="container-fluid py-1 px-3">
 			<div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
 				id="navbar">
-
 				<div class="ms-md-auto pe-md-3 d-flex align-items-center">
 					<div>
-						<% if (userData.getRole().equals("admin")) {%>
+						<%--<% if (userData.getRole().equals("admin")) {%>--%>
 						<a href="${pageContext.request.contextPath}/UserServlet?action=profile&id=<%=userData.getUser_id()%>">
 							Welcome, <%=userData.getFirstName() %>
 						</a>
-						<%} else {%>
+						<%--<%} else {%>
 						<a href="#">
 							Welcome, <%=userData.getFirstName() %>
 						</a>
-						<%}%>
+						<%}%>--%>
 					</div>
 				</div>
 				<% if (userData == null) {%>

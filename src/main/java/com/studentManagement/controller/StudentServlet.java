@@ -33,7 +33,8 @@ public class StudentServlet extends HttpServlet {
         response.setDateHeader("Expires", -1);
         var session = request.getSession(false);
         User sessionUser = (User) session.getAttribute("userData");
-
+        session.removeAttribute("failedMessage");
+        session.removeAttribute("successMessage");
         if (sessionUser != null) {
             List<User> users = userService.getUsers();
 
