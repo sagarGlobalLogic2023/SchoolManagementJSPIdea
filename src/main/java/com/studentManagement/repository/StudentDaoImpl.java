@@ -1,8 +1,9 @@
 package com.studentManagement.repository;
 
 import com.studentManagement.entity.Student;
-import com.studentManagement.entity.Student;
+import com.studentManagement.entity.User;
 import com.studentManagement.util.HibernateUtil;
+import jakarta.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -27,5 +28,48 @@ public class StudentDaoImpl {
             e.printStackTrace();
         }
         return students;
+    }
+
+    public Student find(String rollNumber) {
+        Transaction transaction = null;
+        Student student = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            student = (Student) session.createQuery("from Student where id=:id")
+                    .setParameter("id", rollNumber)
+                    .uniqueResult();
+            transaction.commit();
+        } catch (Exception exception) {
+            if (transaction != null) transaction.rollback();
+            exception.printStackTrace();
+        }
+        return student;
+    }
+
+    public void update(Student student) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.merge(student);
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Student findByUser(User user) {
+        Transaction transaction = null;
+        Student student = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            student = (Student) session.createQuery("from Student where user_id=:id")
+                    .setParameter("id", user)
+                    .uniqueResult();
+            transaction.commit();
+        } catch (Exception exception) {
+            if (transaction != null) transaction.rollback();
+            exception.printStackTrace();
+        }
+        return student;
     }
 }

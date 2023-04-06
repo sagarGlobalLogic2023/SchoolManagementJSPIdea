@@ -1,3 +1,4 @@
+<%@ page import="com.studentManagement.entity.Student" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -20,6 +21,9 @@
 
     <%@ include file="../../components/allCss.jsp" %>
 </head>
+<%
+    Student student = (Student) session.getAttribute("studentData");
+%>
 <body class="g-sidenav-show  bg-gray-100">
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 "
        id="sidenav-main">
@@ -109,11 +113,11 @@
                             <table class="table align-items-center mb-0">
                                 <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Course
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Roll Number
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Teacher
+                                        Attendance
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Score
@@ -122,105 +126,28 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">Biology</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-
                                     <td class="align-middle text-center text-sm">
-                                        <span class="text-xs font-weight-bold">Teacher 3</span>
+                                        <span class="text-xs font-weight-bold"><%=student.getRoll_number()%></span>
                                     </td>
+                                    <% if (student.isPresent()) {%>
+                                    <td class="align-middle text-center text-sm">
+                                        <span class="text-xs font-weight-bold">Present</span>
+                                    </td>
+                                    <%} else {%>
+                                    <td class="align-middle text-center text-sm">
+                                        <span class="text-xs font-weight-bold">Absent</span>
+                                    </td>
+                                    <%}%>
                                     <td class="align-middle">
                                         <div class="progress-wrapper w-75 mx-auto">
                                             <div class="progress-info">
                                                 <div class="progress-percentage">
-                                                    <span class="text-xs font-weight-bold">70%</span>
+                                                    <span class="text-xs font-weight-bold"><%=student.getScore()%></span>
                                                 </div>
                                             </div>
                                             <div class="progress">
-                                                <div class="progress-bar bg-gradient-info w-70" role="progressbar"
-                                                     aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">Chemistry</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td class="align-middle text-center text-sm">
-                                        <span class="text-xs font-weight-bold">Teacher 1</span>
-                                    </td>
-                                    <td class="align-middle">
-                                        <div class="progress-wrapper w-75 mx-auto">
-                                            <div class="progress-info">
-                                                <div class="progress-percentage">
-                                                    <span class="text-xs font-weight-bold">60%</span>
-                                                </div>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-gradient-info w-60" role="progressbar"
-                                                     aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">Physics</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td class="align-middle text-center text-sm">
-                                        <span class="text-xs font-weight-bold">Teacher 1</span>
-                                    </td>
-                                    <td class="align-middle">
-                                        <div class="progress-wrapper w-75 mx-auto">
-                                            <div class="progress-info">
-                                                <div class="progress-percentage">
-                                                    <span class="text-xs font-weight-bold">40%</span>
-                                                </div>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-gradient-info w-40" role="progressbar"
-                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">English</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td class="align-middle text-center text-sm">
-                                        <span class="text-xs font-weight-bold">Teacher 4</span>
-                                    </td>
-                                    <td class="align-middle">
-                                        <div class="progress-wrapper w-75 mx-auto">
-                                            <div class="progress-info">
-                                                <div class="progress-percentage">
-                                                    <span class="text-xs font-weight-bold">60%</span>
-                                                </div>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-gradient-info w-60" role="progressbar"
-                                                     aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar bg-gradient-info w-<%=(int) student.getScore()%>" role="progressbar"
+                                                     aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                     </td>

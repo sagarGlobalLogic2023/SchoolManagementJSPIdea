@@ -1,6 +1,8 @@
 package com.studentManagement.controller;
 
+import com.studentManagement.entity.Student;
 import com.studentManagement.entity.User;
+import com.studentManagement.service.StudentService;
 import com.studentManagement.service.UserService;
 
 import javax.servlet.*;
@@ -12,6 +14,7 @@ import java.util.Objects;
 
 @WebServlet(name = "StudentServlet", value = "/StudentServlet")
 public class StudentServlet extends HttpServlet {
+    StudentService studentService = new StudentService();
     UserService userService = new UserService();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,6 +41,8 @@ public class StudentServlet extends HttpServlet {
             users.remove(user);
             session.setAttribute("userData", user);
             session.setAttribute("userList", users);
+            Student student = studentService.find(user);
+            session.setAttribute("studentData", student);
             if (Objects.equals(user.getRole(), "student") && user.isActive()) {
                 System.out.println("active=" + user.isActive() + user.getEmail());
                 RequestDispatcher dispatcher = request.getRequestDispatcher("pages/student/home.jsp");

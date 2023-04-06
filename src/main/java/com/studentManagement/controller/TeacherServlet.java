@@ -23,8 +23,22 @@ public class TeacherServlet extends HttpServlet {
         switch (action) {
             case "homePage" -> homePage(request, response);
             case "attendance" -> attendance(request, response);
+            case "makeAbsent" -> makeAbsent(request, response);
+            case "makePresent" -> makePresent(request, response);
             default -> {}
         }
+    }
+
+    private void makePresent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String roll_number = request.getParameter("roll_number");
+        studentService.makePresent(roll_number);
+        attendance(request, response);
+    }
+
+    private void makeAbsent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String roll_number = request.getParameter("roll_number");
+        studentService.makeAbsent(roll_number);
+        attendance(request, response);
     }
 
     private void attendance(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -67,6 +81,20 @@ public class TeacherServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setHeader("Cache-control","no-store");
+        response.setHeader("Pragma","no-cache");
+        response.setDateHeader("Expires", -1);
+        String action = request.getParameter("action");
+        switch (action) {
+            case "updateScore" -> updateScore(request, response);
+            default -> {}
+        }
+    }
 
+    private void updateScore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        double score = Double.parseDouble(request.getParameter("score"));
+        String roll_number = request.getParameter("roll_number");
+        studentService.updateScore(roll_number, score);
+        homePage(request, response);
     }
 }

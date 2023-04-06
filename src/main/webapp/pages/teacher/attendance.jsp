@@ -126,7 +126,7 @@
                                         if (student.isPresent()) {
                                     %>
                                     <td class="align-middle text-center">
-                                        <a class="btn btn-link text-dark px-3 mb-0" href="${pageContext.request.contextPath}/UserServlet?action=profile"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>
+                                        <a class="btn btn-link text-dark px-3 mb-0" href="${pageContext.request.contextPath}/TeacherServlet?action=makeAbsent&roll_number=<%=student.getRoll_number()%>"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>
                                             Make Absent
                                         </a>
                                     </td>
@@ -134,7 +134,7 @@
                                     } else {
                                     %>
                                     <td class="align-middle text-center">
-                                        <a class="btn btn-link text-dark px-3 mb-0" href="${pageContext.request.contextPath}/UserServlet?action=profile"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>
+                                        <a class="btn btn-link text-dark px-3 mb-0" href="${pageContext.request.contextPath}/TeacherServlet?action=makePresent&roll_number=<%=student.getRoll_number()%>"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>
                                             Make Present
                                         </a>
                                     </td>

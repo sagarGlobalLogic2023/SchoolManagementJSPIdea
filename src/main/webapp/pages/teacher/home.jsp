@@ -142,12 +142,12 @@
                                     %>
                                     <td class="align-middle text-center">
                                         <div class="row">
-                                            <form action="post">
-                                                <div class="col-6">
+                                            <form action="TeacherServlet?action=updateScore&roll_number=<%=student.getRoll_number()%>" method="post">
+                                                <div class="col-11">
                                                     <input type="text" name="score" value="<%=student.getScore()%>" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                                    <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Update</button>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p class="text-sm font-weight-bold mb-0"><%=student.getScore()%></p>
                                                 </div>
                                             </form>
                                         </div>
